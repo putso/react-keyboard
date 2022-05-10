@@ -1,0 +1,23 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+
+}
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.keyboard__row {
+    display: flex;
+    gap: 5px 5px;
+
+}
+.keyboard__key {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    background-color: blanchedalmond;
+}
