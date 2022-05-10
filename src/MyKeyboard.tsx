@@ -3,6 +3,10 @@ import MyKey from './MyKey';
 import './styles/App.css';
 import {keyValue, keyCodes,wideKeys} from './data/data_key';
 
+interface KeyBoardProps {
+  handleKey: (letter:string) => void; 
+}
+
 function wideKeysClass(keyCode:string):string {
   let index: keyof typeof wideKeys; 
   for( index in wideKeys) {
@@ -10,13 +14,22 @@ function wideKeysClass(keyCode:string):string {
   }
   return ' ';
 }
-const  MyKeyboard:React.FC = () => {
+const  MyKeyboard:React.FC<KeyBoardProps> = ({handleKey}) => {
     let [currentKeys, setCurrentKeys] = useState(keyValue.ru);
     let listKey:JSX.Element[] = keyCodes.map((row,i) => {
        return (
         <div className = 'keyboard__row' key = {i}>
             { 
-                row.map( (keyCode,j) => <div key = {keyCode} className = {'keyboard__key ' + keyCode + wideKeysClass(keyCode)} > {currentKeys[i][j] }</div>)
+                row.map( (keyCode,j) => 
+                <MyKey 
+                  key = {keyCode}
+                  keyCode = {keyCode} 
+                  className = {'keyboard__key ' + keyCode + ' ' +  wideKeysClass(keyCode)} 
+                  handleKey = {handleKey}
+                > 
+                  {currentKeys[i][j] }
+
+                </MyKey>)
             }
         </div>
         )

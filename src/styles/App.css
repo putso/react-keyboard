@@ -9,10 +9,13 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 800px;
 }
 .keyboard__row {
     display: flex;
     gap: 5px 5px;
+    width: 100%;
+    justify-content: center;
 
 }
 .keyboard__key {
@@ -20,4 +23,15 @@
     width: 50px;
     height: 50px;
     background-color: blanchedalmond;
+}
+.key_width3 {
+    width: auto;
+    flex-grow: 1;
+}
+.key_width2 {
+    width: 100px;
+}
+.key_space {
+    width: auto;
+    flex-grow: 1;
 }
