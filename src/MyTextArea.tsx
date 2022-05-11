@@ -1,6 +1,8 @@
 import React from 'react'
-
-function MyTextArea() {
+interface textAreaProps {
+  text: string[];
+}
+const MyTextArea:React.FC<textAreaProps> = ({text}) => {
   return (
     <div>MyTextArea</div>
   )

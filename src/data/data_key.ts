@@ -35,4 +35,18 @@ const wideKeys = {
     key_space: ['Space']
 
 }
-export {keyValue, keyCodes,wideKeys};
+function createMap(codes:string[][],values:string[][]) {
+    let keysMap = new Map<string,string>();
+    for(let i =0 ;i<codes.length;i++) {
+        for(let j = 0; j<codes[i].length;j++)
+        {
+            keysMap.set(codes[i][j],values[i][j]);
+        }
+    }
+    return keysMap;
+}
+function itsLetter(keyCode:string):boolean {
+    let notLetter = ['ControlLeft','MetaLeft','AltLeft','AltRight','ControlRight','ShiftRight','ShiftLeft','CapsLock'];
+    return !notLetter.includes(keyCode);
+}
+export {keyValue, keyCodes,wideKeys,createMap,itsLetter};

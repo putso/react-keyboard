@@ -35,3 +35,6 @@
     width: auto;
     flex-grow: 1;
 }
+.key__pressed {
+    background-color: rgb(184, 114, 9);
+}
