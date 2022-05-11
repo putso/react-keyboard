@@ -7,25 +7,24 @@ interface KeyData {
   value: string;
   code: string;
 }
-enum typeEvent {
-  keyDown ='keyDown',
-  keyUp = 'keyUp'
-  
+interface KeyEvent {
+  'keyup': KeyboardEvent;
+  'keydown': KeyboardEvent;
 }
 function App() {
   let [keyPressed, setKeyPressed] = useState<string[]>([]);
   let [textAreaValue,setTextAreaValue] = useState<string[]>([]);
-  function handleKey(keyData:KeyData, typeEvent = 'keyDown') {
-    // console.log(keyData);
+  function handleKey(keyData:KeyData, typeEvent:keyof KeyEvent = 'keydown') {
+    console.log('handleKey');
     setTextAreaValue((textAreaValue) => {
       if(itsLetter(keyData.code)) return [...textAreaValue,keyData.value];
       
       return textAreaValue;
     }) 
     setKeyPressed((keyPressed)=> {
-      console.log(typeEvent) ;
-      if(typeEvent === 'keyDown' && !keyPressed.includes(keyData.code) ) return [...keyPressed,keyData.code];
-      if(typeEvent === 'keyUp') return keyPressed.filter(el => el!== keyData.code);
+      //console.log(typeEvent) ;
+      if(typeEvent === 'keydown' && !keyPressed.includes(keyData.code) ) return [...keyPressed,keyData.code];
+      if(typeEvent === 'keyup') return keyPressed.filter(el => el!== keyData.code);
       return keyPressed;
     });
     

@@ -8,8 +8,12 @@ interface KeyData {
   value: string;
   code: string;
 }
+interface KeyEvent {
+  'keyup': KeyboardEvent;
+  'keydown': KeyboardEvent;
+}
 interface KeyBoardProps {
-  handleKey: (letter:KeyData, Eventtype?: string) => void; 
+  handleKey: (keyData:KeyData, typeEvent:keyof KeyEvent) => void; 
   keyPressed: string[];
 }
 
@@ -27,25 +31,18 @@ const  MyKeyboard:React.FC<KeyBoardProps> = ({handleKey,keyPressed}) => {
     let keysMap = createMap(keyCodes,currentKeys);
     useEffect( ()=> {
       console.log('useEffect');
-      let keydownHandler = (e:KeyboardEvent) => {     
-        handleKey({
-          value: keysMap.get(e.code) || '',
-          code: e.code
-        });
-
-      } 
-      document.body.addEventListener('keydown', keydownHandler);
-
-
-      interface KeyEvent {
-        'keydown': KeyboardEvent;
-        'keyup': KeyboardEvent;
-      }
-
-      let keyEvents:Array<keyof KeyEvent> = ['keyup', 'keydown'];
-      keyEvents.forEach(keyEvent => {
-        document.body.addEventListener<keyof KeyEvent>(keyEvent, (e)=> {console.log(e.code)});
-      } )
+     
+      //document.body.addEventListener('keydown', keydownHandler);
+      let keyboardEvents:Array<keyof KeyEvent> = ['keyup', 'keydown'];
+      keyboardEvents.forEach( keyboardEvent => {
+         document.body.addEventListener<keyof KeyEvent>( keyboardEvent, (e) => {
+          console.log('BeforeHandleKeys')
+          handleKey({
+            value: keysMap.get(e.code) || '',
+            code: e.code
+          }, keyboardEvent );
+         })
+      });
 
 
 
@@ -70,8 +67,8 @@ const  MyKeyboard:React.FC<KeyBoardProps> = ({handleKey,keyPressed}) => {
                     key = {keyCode}
                     keyCode = {keyCode} 
                     className = {'keyboard__key ' + keyCode + ' ' +  wideKeysClass(keyCode) + (keyPressed.includes(keyCode)? ' key__pressed ': '') } 
-                    onMouseDown ={() => handleKey(keyData)}
-                    onMouseUp ={() => handleKey(keyData, 'keyUp')}
+                    onMouseDown ={() => handleKey(keyData, 'keydown')}
+                    onMouseUp ={() => handleKey(keyData, 'keyup')}
 
                   > 
                   {keyValue }

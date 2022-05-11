@@ -11,19 +11,6 @@ interface KeyProps {
 
 
 const MyKey:React.FC<KeyProps> = ({children, className,keyCode,onMouseDown,onMouseUp}) => {
-  // useEffect( ()=> {
-  //   console.log('adddeventListerner');
-  //   let keydownHandler = (e:KeyboardEvent) => {
-  //     console.log('123');
-  //     if(e.code === keyCode) handleKey(children);
-
-  //   }
-  //   document.body.addEventListener('keydown', keydownHandler);
-  //   return () => 
-  //   {
-  //     document.body.removeEventListener('keydown', keydownHandler);
-  //   }
-  // }) 
   return (
     <div className={className } onMouseDown= {onMouseDown} onMouseUp= {onMouseUp}  >{children}</div>
   )
