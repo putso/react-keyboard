@@ -38,3 +38,11 @@
 .key__pressed {
     background-color: rgb(184, 114, 9);
 }
+.myTextArea {
+    display: flex;
+    flex-wrap: wrap;
+    width: 900px;
+    height: 300px;
+    margin: 0 auto;
+    background-color: beige;
+}

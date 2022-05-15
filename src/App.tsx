@@ -1,5 +1,5 @@
 import { text } from 'node:stream/consumers';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MyKeyboard from './MyKeyboard';
 import MyTextArea from './MyTextArea';
 import {itsLetter} from './data/data_key';
@@ -12,24 +12,33 @@ interface KeyEvent {
   'keydown': KeyboardEvent;
 }
 function App() {
-  let [keyPressed, setKeyPressed] = useState<string[]>([]);
-  let [textAreaValue,setTextAreaValue] = useState<string[]>([]);
+  let [keyPressed, setKeyPressed] = useState<KeyData[]>([]);
   function handleKey(keyData:KeyData, typeEvent:keyof KeyEvent = 'keydown') {
-    console.log('handleKey');
-    setTextAreaValue((textAreaValue) => {
-      if(itsLetter(keyData.code)) return [...textAreaValue,keyData.value];
+    // console.log('handleKey');
+    // setTextAreaValue((textAreaValue) => {
+    //   if(itsLetter(keyData.code) && typeEvent === 'keydown') return [...textAreaValue,keyData.value];
       
-      return textAreaValue;
-    }) 
+    //   return textAreaValue;
+    // }) 
     setKeyPressed((keyPressed)=> {
       //console.log(typeEvent) ;
-      if(typeEvent === 'keydown' && !keyPressed.includes(keyData.code) ) return [...keyPressed,keyData.code];
-      if(typeEvent === 'keyup') return keyPressed.filter(el => el!== keyData.code);
+      let t = [...keyPressed,keyData.code];
+      if(typeEvent === 'keydown' && !keyPressed.map(el => el.code).includes(keyData.code) ) return [...keyPressed,keyData];
+      if(typeEvent === 'keyup') return keyPressed.filter(el => el.code!== keyData.code);
       return keyPressed;
     });
     
   }
-
+  let [test, setTest] = useState(1);
+  useEffect(() => {
+      setInterval(() => {
+    
+    setTest((prevValue) => {
+      console.log('setInterval');
+      return prevValue+1;
+    });
+  },1000);
+  },[])
 
 
 
@@ -37,8 +46,8 @@ function App() {
 
   return (
     <div className="App">
-      <MyTextArea text = {textAreaValue}></MyTextArea>
-      <MyKeyboard  handleKey= {handleKey} keyPressed = {keyPressed}></MyKeyboard>
+      <MyTextArea ></MyTextArea>
+      <MyKeyboard  handleKey= {handleKey} keyPressed = {keyPressed.map(el => el.code)}></MyKeyboard>
     </div>
   );
 }

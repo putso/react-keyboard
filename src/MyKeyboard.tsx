@@ -1,9 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import MyKey from './MyKey';
 import './styles/App.css';
 import {keyValue, keyCodes,wideKeys,createMap} from './data/data_key';
 
-
+interface  Keys {
+  ru: string[][],
+  en: string[][]
+}
 interface KeyData {
   value: string;
   code: string;
@@ -24,19 +27,32 @@ function wideKeysClass(keyCode:string):string {
   }
   return ' ';
 }
-
-const  MyKeyboard:React.FC<KeyBoardProps> = ({handleKey,keyPressed}) => {
-
-    let [currentKeys, setCurrentKeys] = useState(keyValue.ru);
-    let keysMap = createMap(keyCodes,currentKeys);
+let countRender = 0;
+function getCurrenKeys(keyPressed:string[], current:string[][]) {
+  // console.log('getCurrenKeys',keyPressed);
+  let changeLanguageKeys = ['ControlLeft','AltLeft'];
+  let checkLast =  changeLanguageKeys.includes( keyPressed[keyPressed.length-1]);
+  let checkIncludes = changeLanguageKeys.reduce( (a,b) => a && keyPressed.includes(b), true);
+  let nextLanguage = (Object.keys(keyValue) as Array<keyof typeof keyValue>).filter(el => keyValue[el]!== current)[0];
+  // console.log('checks',checkLast, checkIncludes);
+  if(checkLast && checkIncludes) {
+    // console.log('check ad');
+    // console.log(keyValue[nextLanguage],nextLanguage);
+    return keyValue[nextLanguage];
+  } 
+  return current;
+}
+const  MyKeyboard:React.FC<KeyBoardProps> = React.memo(({handleKey,keyPressed}) => {
+    console.log(countRender++);
+    let currentKeysRef = useRef(keyValue.ru);
+    currentKeysRef.current = getCurrenKeys(keyPressed, currentKeysRef.current)
     useEffect( ()=> {
+
       console.log('useEffect');
-     
-      //document.body.addEventListener('keydown', keydownHandler);
+      let keysMap = createMap(keyCodes,currentKeysRef.current);
       let keyboardEvents:Array<keyof KeyEvent> = ['keyup', 'keydown'];
       keyboardEvents.forEach( keyboardEvent => {
          document.body.addEventListener<keyof KeyEvent>( keyboardEvent, (e) => {
-          console.log('BeforeHandleKeys')
           handleKey({
             value: keysMap.get(e.code) || '',
             code: e.code
@@ -48,20 +64,19 @@ const  MyKeyboard:React.FC<KeyBoardProps> = ({handleKey,keyPressed}) => {
 
 
 
-    },[]) 
+    },[])
 
 
 
 
 
-
-    let listKey:JSX.Element[] = keyCodes.map((row,i) => {
+    let listKey = keyCodes.map((row,i) => {
        return (
         <div className = 'keyboard__row' key = {i}>
             { 
                 row.map( (keyCode,j) => {
-                let keyValue = currentKeys[i][j];
-                let keyData = {value:keyValue, code: keyCode};
+                let keyValue = currentKeysRef.current[i][j];
+                let keyData:KeyData = {value:keyValue, code: keyCode};
                 return (
                   <MyKey 
                     key = {keyCode}
@@ -84,6 +99,7 @@ const  MyKeyboard:React.FC<KeyBoardProps> = ({handleKey,keyPressed}) => {
         {listKey}
     </div>
   )
-}
+},() => true);
 
 export default MyKeyboard
+
