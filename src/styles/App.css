@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select:none
 
 
 }
@@ -45,4 +46,25 @@
     height: 300px;
     margin: 0 auto;
     background-color: beige;
+    flex-direction: column;
+}
+.world {
+    display: flex;
+}
+.letter {
+    display: flex;
+}
+.cursor {
+    content: '|';
+    animation-duration: 0.3s;
+    animation-name: cursorBlink;
+    animation-iteration-count: infinite;
+}
+@keyframes cursorBlink {
+    from {
+        opacity: 100%;
+    }
+    to {
+        opacity: 0;
+    }
 }

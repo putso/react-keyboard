@@ -1,16 +1,15 @@
 import React, {  ReactElement, useEffect } from 'react'
 import { useState } from 'react';
 
-interface KeyProps {
+interface MyKeyProps {
   children: string;
   className: string;
-  keyCode: string;
   onMouseDown: () => void;
   onMouseUp: () => void;
 }
 
 
-const MyKey:React.FC<KeyProps> = ({children, className,keyCode,onMouseDown,onMouseUp}) => {
+const MyKey:React.FC<MyKeyProps> = ({children, className,onMouseDown,onMouseUp}) => {
   return (
     <div className={className } onMouseDown= {onMouseDown} onMouseUp= {onMouseUp}  >{children}</div>
   )
